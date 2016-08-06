@@ -4,5 +4,7 @@ node_modules
 platforms
 plugins
 dist
+build
 typings
 www
+electron/application

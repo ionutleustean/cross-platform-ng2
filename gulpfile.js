@@ -18,6 +18,18 @@ gulp.task('serve:dist', gulp.series('default', 'browsersync:dist'));
 gulp.task('default', gulp.series('clean', 'build'));
 gulp.task('watch', watch);
 
+
+gulp.task('cordova:browser', gulp.series('clean', 'clean-cordova', 'build', 'copy-cordova', 'prepare:cordova:browser'));
+gulp.task('cordova:android', gulp.series('clean', 'clean-cordova', 'build', 'copy-cordova', 'prepare:cordova:android'));
+gulp.task('cordova:ios', gulp.series('clean', 'clean-cordova', 'build', 'copy-cordova', 'prepare:cordova:ios'));
+
+
+gulp.task('electron', gulp.series('clean', 'clean-electron', 'build', 'copy-electron', 'prepare:electron'));
+gulp.task('electron:mac', gulp.series('clean', 'clean-electron', 'build', 'copy-electron', 'prepare:electron:mac'));
+gulp.task('electron:win', gulp.series('clean', 'clean-electron', 'build', 'copy-electron', 'prepare:electron:win'));
+
+
+
 function reloadBrowserSync(cb) {
   browserSync.reload();
   cb();
