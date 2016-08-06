@@ -4,6 +4,13 @@ import 'reflect-metadata';
 import 'zone.js/dist/zone';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {Component} from '@angular/core';
+import { provideRouter, RouterConfig, ROUTER_DIRECTIVES} from '@angular/router';
+import {HTTP_BINDINGS} from '@angular/http'
+import {APP_BASE_HREF} from '@angular/common';
+
+
+import {Hello} from './app/hello';
+
 
 //
 // import './index.less';
@@ -17,14 +24,22 @@ declare var process: any;
 if (process.env.NODE_ENV === 'production') {
   enableProdMode();
 }
-//
-// bootstrap(Root, [
-//   provideRouter(routes),
-// ]);
+
+const routes: RouterConfig = [
+  { path: '', component: Hello },
+  // { path: 'action', component: Action },
+];
+
+export const appRouterProviders = [
+  provideRouter(routes)
+];
+
+
 
 @Component({
   selector: 'app',
-  template: " <div> test </div>"
+  template: '<div> <router-outlet></router-outlet> </div>',
+  directives: [ROUTER_DIRECTIVES]
 })
 
 
@@ -37,4 +52,8 @@ export class App {
 
 }
 
-bootstrap(App);
+bootstrap(App, [
+  appRouterProviders,
+  {provide: APP_BASE_HREF, useValue: '/'},
+  HTTP_BINDINGS
+]);

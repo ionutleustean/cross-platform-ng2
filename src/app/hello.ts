@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'App',
+  selector: 'hello',
   template: require('./hello.html')
 })
 export class Hello {
