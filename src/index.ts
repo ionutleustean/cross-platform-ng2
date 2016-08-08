@@ -6,7 +6,6 @@ import {bootstrap} from '@angular/platform-browser-dynamic';
 import {Component} from '@angular/core';
 import { provideRouter, RouterConfig, ROUTER_DIRECTIVES} from '@angular/router';
 import {HTTP_BINDINGS} from '@angular/http'
-import {APP_BASE_HREF} from '@angular/common';
 
 
 import {Hello} from './app/hello';
@@ -54,6 +53,5 @@ export class App {
 
 bootstrap(App, [
   appRouterProviders,
-  {provide: APP_BASE_HREF, useValue: '/'},
   HTTP_BINDINGS
 ]);
