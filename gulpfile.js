@@ -1,23 +1,88 @@
+
 const gulp = require('gulp');
-const HubRegistry = require('gulp-hub');
-const browserSync = require('browser-sync');
+const shell = require('gulp-shell');
+const clean = require('gulp-clean');
 
-const conf = require('./conf/gulp.conf');
+gulp.task('copy-cordova', function () {
+  return gulp
+    .src('build/**/*')
+    .pipe(gulp.dest('www'));
+});
 
-// Load some files into the registry
-const hub = new HubRegistry([conf.path.tasks('*.js')]);
+gulp.task('clean-cordova', function () {
+  return gulp
+    .src('www/*')
+    .pipe(clean());
+});
 
-// Tell gulp to use the tasks just loaded
-gulp.registry(hub);
+gulp.task('prepare:cordova:browser', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('cordova run browser'))
+});
 
-gulp.task('build', gulp.series(gulp.parallel('other', 'webpack:dist')));
-gulp.task('test', gulp.series('karma:single-run'));
-gulp.task('test:auto', gulp.series('karma:auto-run'));
-gulp.task('serve', gulp.series('webpack:watch', 'watch', 'browsersync'));
-gulp.task('serve:dist', gulp.series('default', 'browsersync:dist'));
-gulp.task('default', gulp.series('clean', 'build'));
-gulp.task('watch', watch);
+gulp.task('prepare:cordova:ios', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('cordova run ios'))
+});
 
+gulp.task('prepare:cordova:android', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('cordova run android'))
+});
+
+gulp.task('copy-electron', function () {
+  return gulp
+    .src('build/**/*')
+    .pipe(gulp.dest('electron/application'));
+});
+
+gulp.task('clean-electron', function () {
+  return gulp
+    .src('electron/application/*')
+    .pipe(clean());
+});
+
+
+gulp.task('prepare:electron:mac', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('node_modules/.bin/build -m'))
+});
+
+gulp.task('prepare:electron:win', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('node_modules/.bin/build -w'))
+});
+
+
+gulp.task('prepare:electron', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('./node_modules/.bin/electron ./electron/'))
+});
+
+gulp.task('build', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('ng build --prod --output-path=build'))
+});
+
+gulp.task('serve', function () {
+  return gulp
+    .src('/')
+    .pipe(shell('ng serve --output-path=build'))
+});
+
+
+gulp.task('clean', function () {
+  return gulp
+    .src('build/*')
+    .pipe(clean());
+});
 
 gulp.task('cordova:browser', gulp.series('clean', 'clean-cordova', 'build', 'copy-cordova', 'prepare:cordova:browser'));
 gulp.task('cordova:android', gulp.series('clean', 'clean-cordova', 'build', 'copy-cordova', 'prepare:cordova:android'));
@@ -29,13 +94,3 @@ gulp.task('electron:mac', gulp.series('clean', 'clean-electron', 'build', 'copy-
 gulp.task('electron:win', gulp.series('clean', 'clean-electron', 'build', 'copy-electron', 'prepare:electron:win'));
 
 
-
-function reloadBrowserSync(cb) {
-  browserSync.reload();
-  cb();
-}
-
-function watch(done) {
-  gulp.watch(conf.path.src('app/**/*.html'), reloadBrowserSync);
-  done();
-}
