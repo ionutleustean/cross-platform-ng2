@@ -1,20 +1,36 @@
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="">
-                Cross-platform Ng2
-            </a>
-        </div>
-
-        <div class="navbar-right">
-            <div class="navbar-text ">
-                <span class="label" [ngClass]="getInternetStatus()"> </span>
+<nav class="navbar navbar-light bg-faded navbar-static-top">
+    <a class="navbar-brand" href="">
+        Cross-platform Ng2
+    </a>
+    <div class="nav navbar-nav">
+        <div class="pull-xs-right">
+            <div class="nav-item">
+                <p class="tag tag-pill" [ngClass]="getInternetStatus()">!</p>
             </div>
         </div>
     </div>
 </nav>
 
 
-<div class="container-fluid">
-    <router-outlet></router-outlet>
+<div class="container">
+
+    <div class="row">
+        <div class="col-xs-12">
+            <nav class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="" routerLinkActive="active">Online</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/offline" routerLinkActive="active">Offline</a>
+                </li>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
